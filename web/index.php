@@ -9,14 +9,6 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
 
-
-$app->get('/hello/{name}', function ($name) use ($app) {
-    return $app['twig']->render('template/hello.twig', array(
-        'name' => $name,
-    ));
-});
-
-
 $app->get('/{page}', function ($page) use ($app) {
     try
     {
@@ -29,7 +21,6 @@ $app->get('/{page}', function ($page) use ($app) {
             $app->abort('404', 'Twig pas trouvé');
         }
     }
-
 });
 
 $app->run();
