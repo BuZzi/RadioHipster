@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="etuwebdev_radiohipster" defaultIdMethod="native">
+    <table name="song" phpName="Song">
+        <column name="song_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="song_name" type="varchar" size="255" required="true" />
+        <column name="song_year" type="integer" size="4" required="true" />
+        <column name="song_duration" type="varchar" size="255" required="true" />
+        <column name="user_id" type="integer" size="255" required="true" />
+        <column name="artiste_id" type="integer" size="255" required="true" />
+        <column name="album_id" type="integer" size="255" required="true" />
+        <column name="sort_id" type="integer" size="255" required="true" />
+        <foreign-key foreignTable="user" onDelete="CASCADE">
+            <reference local="user_id" foreign="user_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="artiste" onDelete="CASCADE">
+            <reference local="artiste_id" foreign="artiste_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="album" onDelete="CASCADE">
+            <reference local="album_id" foreign="album_id"/>
+        </foreign-key>
+        <foreign-key foreignTable="sort" onDelete="CASCADE">
+            <reference local="sort_id" foreign="sort_id"/>
+        </foreign-key>
+    </table>
+    <table name="user" phpName="User">
+        <column name="user_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="user_name" type="varchar" size="255" required="true" />
+        <column name="user_email" type="varchar" size="255" required="true" />
+    </table>
+    <table name="playlist" phpName="Playlist" isCrossRef="true">
+        <column name="playlist_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="playlist_order" type="integer" required="true" />
+        <column name="song_id" type="integer" required="true" />
+        <foreign-key foreignTable="song" onDelete="CASCADE">
+            <reference local="song_id" foreign="song_id"/>
+        </foreign-key>
+    </table>
+    <table name="artiste" phpName="Artiste">
+        <column name="artiste_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="artiste_name" type="varchar" size="255" required="true" />
+    </table>
+    <table name="album" phpName="Album">
+        <column name="album_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="album_name" type="varchar" size="255" required="true" />
+    </table>
+    <table name="sort" phpName="Sort">
+        <column name="sort_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
+        <column name="sort_name" type="varchar" size="255" required="true" />
+    </table>
+</database>
