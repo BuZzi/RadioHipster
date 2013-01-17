@@ -1,6 +1,44 @@
 {% extends "layout/base.twig" %}
 
 {% block content %}
-    {{ parent() }}
-    Le bloc upload
+    <form action="{{ ('upload') }}" method="POST" class="form">
+
+        <div>
+            {{ form_label(uploadForm.musicName) }}
+
+            {{ form_widget(uploadForm.musicName) }}
+            {{ form_errors(uploadForm.musicName) }}
+        </div>
+
+        <div>
+            {{ form_label(uploadForm.artiste) }}
+
+            {{ form_widget(uploadForm.artiste) }}
+            {{ form_errors(uploadForm.artiste) }}
+        </div>
+
+        <div>
+            {{ form_label(uploadForm.album) }}
+
+            {{ form_widget(uploadForm.album) }}
+            {{ form_errors(uploadForm.album) }}
+        </div>
+
+        <div>
+            {{ form_label(uploadForm.userName) }}
+
+            {{ form_widget(uploadForm.userName) }}
+            {{ form_errors(uploadForm.userName) }}
+        </div>
+
+        <div>
+            {{ form_label(uploadForm.email) }}
+
+            {{ form_widget(uploadForm.email) }}
+            {{ form_errors(uploadForm.email) }}
+        </div>
+
+
+        <input type="submit" name="submit" />
+    </form>
 {% endblock %}
