@@ -133,11 +133,13 @@ $app->match('/upload', function (Request $request) use ($app) {
 //Controller Home
 $app->match('/home', function (Request $request) use ($app) {
 	
-	$oDbPlaylist = new BasePlaylistPeer();
+	$aPlaylist = PlaylistQuery::create()
+		->find();
 	
+	var_dump($aPlaylist);
 	
 	//Récupération du tableaux de la playlist
-	$aPlaylist = $oDbPlaylist->doSelect();
+
 	
 	//Récupérations du top 10
 	

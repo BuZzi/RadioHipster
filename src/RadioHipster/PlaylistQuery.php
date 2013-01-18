@@ -15,4 +15,5 @@
  */
 class PlaylistQuery extends BasePlaylistQuery
 {
+
 }
