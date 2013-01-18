@@ -1,7 +1,7 @@
 {% extends "layout/base.twig" %}
 
 {% block content %}
-    <form action="{{ ('upload') }}" method="POST" class="form">
+    <form action="{{ ('upload') }}" method="POST" class="form" {{ form_enctype(uploadForm) }}>
 
         <div>
             {{ form_label(uploadForm.musicName) }}
@@ -36,6 +36,13 @@
 
             {{ form_widget(uploadForm.email) }}
             {{ form_errors(uploadForm.email) }}
+        </div>
+
+        <div>
+            {{ form_label(uploadForm.song) }}
+
+            {{ form_widget(uploadForm.song) }}
+            {{ form_errors(uploadForm.song) }}
         </div>
 
 
