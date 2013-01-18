@@ -23,23 +23,7 @@ CREATE TABLE `song`
     INDEX `song_FI_1` (`user_id`),
     INDEX `song_FI_2` (`artiste_id`),
     INDEX `song_FI_3` (`album_id`),
-    INDEX `song_FI_4` (`sort_id`),
-    CONSTRAINT `song_FK_1`
-        FOREIGN KEY (`user_id`)
-        REFERENCES `user` (`user_id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `song_FK_2`
-        FOREIGN KEY (`artiste_id`)
-        REFERENCES `artiste` (`artiste_id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `song_FK_3`
-        FOREIGN KEY (`album_id`)
-        REFERENCES `album` (`album_id`)
-        ON DELETE CASCADE,
-    CONSTRAINT `song_FK_4`
-        FOREIGN KEY (`sort_id`)
-        REFERENCES `sort` (`sort_id`)
-        ON DELETE CASCADE
+    INDEX `song_FI_4` (`sort_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -68,11 +52,7 @@ CREATE TABLE `playlist`
     `playlist_order` INTEGER NOT NULL,
     `song_id` INTEGER NOT NULL,
     PRIMARY KEY (`playlist_id`),
-    INDEX `playlist_FI_1` (`song_id`),
-    CONSTRAINT `playlist_FK_1`
-        FOREIGN KEY (`song_id`)
-        REFERENCES `song` (`song_id`)
-        ON DELETE CASCADE
+    INDEX `playlist_FI_1` (`song_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------

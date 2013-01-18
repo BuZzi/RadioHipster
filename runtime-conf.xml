@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <propel>
-        <datasources default="radiohipster">
-            <datasource id="radiohipster">
+        <datasources default="etuwebdev_radiohipster">
+            <datasource id="etuwebdev_radiohipster">
                 <adapter>mysql</adapter>
                 <connection>
                     <dsn>mysql:host=mysql1.alwaysdata.com;dbname=etuwebdev_radiohipster</dsn>

@@ -6,6 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $app = require __DIR__.'/bootstrap.php';
 
+
 // CONTROLLER PAGE UPLOAD
 $app->match('/upload', function (Request $request) use ($app) {
 
@@ -123,31 +124,6 @@ $app->match('/home', function (Request $request) use ($app) {
     $aPlaylist = PlaylistQuery::create()
         ->find();
 
-    var_dump($aPlaylist);
-
-    //Récupération du tableaux de la playlist
-
-
-    //Récupérations du top 10
-
-    //Récupération des dernières chansons jouées
-
-    // display the form
-    return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist));
-});
-
-$app->get('/{page}', function ($page) use ($app) {
-    try
-    {
-        return $app['twig']->render('template/'.$page.'.twig', array());
-    }
-    catch(exception $e)
-    {
-        if(get_class($e) == "Twig_Error_Loader")
-        {
-            $app->abort('404', 'Twig pas trouvé');
-        }
-    }
 
 });
 
