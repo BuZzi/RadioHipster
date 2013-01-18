@@ -42,15 +42,10 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     protected $playlist_order;
 
     /**
-     * The value for the song_id field.
-     * @var        int
+     * @var        PropelObjectCollection|Song[] Collection to store aggregation of Song objects.
      */
-    protected $song_id;
-
-    /**
-     * @var        Song
-     */
-    protected $aSong;
+    protected $collSongs;
+    protected $collSongsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -73,6 +68,12 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     protected $alreadyInClearAllReferencesDeep = false;
 
     /**
+     * An array of objects scheduled for deletion.
+     * @var		PropelObjectCollection
+     */
+    protected $songsScheduledForDeletion = null;
+
+    /**
      * Get the [playlist_id] column value.
      *
      * @return int
@@ -90,16 +91,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     public function getPlaylistOrder()
     {
         return $this->playlist_order;
-    }
-
-    /**
-     * Get the [song_id] column value.
-     *
-     * @return int
-     */
-    public function getSongId()
-    {
-        return $this->song_id;
     }
 
     /**
@@ -145,31 +136,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     } // setPlaylistOrder()
 
     /**
-     * Set the value of [song_id] column.
-     *
-     * @param int $v new value
-     * @return Playlist The current object (for fluent API support)
-     */
-    public function setSongId($v)
-    {
-        if ($v !== null && is_numeric($v)) {
-            $v = (int) $v;
-        }
-
-        if ($this->song_id !== $v) {
-            $this->song_id = $v;
-            $this->modifiedColumns[] = PlaylistPeer::SONG_ID;
-        }
-
-        if ($this->aSong !== null && $this->aSong->getSongId() !== $v) {
-            $this->aSong = null;
-        }
-
-
-        return $this;
-    } // setSongId()
-
-    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -203,7 +169,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
 
             $this->playlist_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
             $this->playlist_order = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-            $this->song_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -212,7 +177,7 @@ abstract class BasePlaylist extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
             $this->postHydrate($row, $startcol, $rehydrate);
-            return $startcol + 3; // 3 = PlaylistPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 2; // 2 = PlaylistPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating Playlist object", $e);
@@ -235,9 +200,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
-        if ($this->aSong !== null && $this->song_id !== $this->aSong->getSongId()) {
-            $this->aSong = null;
-        }
     } // ensureConsistency
 
     /**
@@ -277,7 +239,8 @@ abstract class BasePlaylist extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->aSong = null;
+            $this->collSongs = null;
+
         } // if (deep)
     }
 
@@ -391,18 +354,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
-            // We call the save method on the following object(s) if they
-            // were passed to this object by their coresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aSong !== null) {
-                if ($this->aSong->isModified() || $this->aSong->isNew()) {
-                    $affectedRows += $this->aSong->save($con);
-                }
-                $this->setSong($this->aSong);
-            }
-
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -412,6 +363,23 @@ abstract class BasePlaylist extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
+            }
+
+            if ($this->songsScheduledForDeletion !== null) {
+                if (!$this->songsScheduledForDeletion->isEmpty()) {
+                    SongQuery::create()
+                        ->filterByPrimaryKeys($this->songsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->songsScheduledForDeletion = null;
+                }
+            }
+
+            if ($this->collSongs !== null) {
+                foreach ($this->collSongs as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
             }
 
             $this->alreadyInSave = false;
@@ -446,9 +414,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
         if ($this->isColumnModified(PlaylistPeer::PLAYLIST_ORDER)) {
             $modifiedColumns[':p' . $index++]  = '`playlist_order`';
         }
-        if ($this->isColumnModified(PlaylistPeer::SONG_ID)) {
-            $modifiedColumns[':p' . $index++]  = '`song_id`';
-        }
 
         $sql = sprintf(
             'INSERT INTO `playlist` (%s) VALUES (%s)',
@@ -465,9 +430,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
                         break;
                     case '`playlist_order`':
                         $stmt->bindValue($identifier, $this->playlist_order, PDO::PARAM_INT);
-                        break;
-                    case '`song_id`':
-                        $stmt->bindValue($identifier, $this->song_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -563,22 +525,18 @@ abstract class BasePlaylist extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            // We call the validate method on the following object(s) if they
-            // were passed to this object by their coresponding set
-            // method.  This object relates to these object(s) by a
-            // foreign key reference.
-
-            if ($this->aSong !== null) {
-                if (!$this->aSong->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aSong->getValidationFailures());
-                }
-            }
-
-
             if (($retval = PlaylistPeer::doValidate($this, $columns)) !== true) {
                 $failureMap = array_merge($failureMap, $retval);
             }
 
+
+                if ($this->collSongs !== null) {
+                    foreach ($this->collSongs as $referrerFK) {
+                        if (!$referrerFK->validate($columns)) {
+                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+                        }
+                    }
+                }
 
 
             $this->alreadyInValidation = false;
@@ -621,9 +579,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
             case 1:
                 return $this->getPlaylistOrder();
                 break;
-            case 2:
-                return $this->getSongId();
-                break;
             default:
                 return null;
                 break;
@@ -655,11 +610,10 @@ abstract class BasePlaylist extends BaseObject implements Persistent
         $result = array(
             $keys[0] => $this->getPlaylistId(),
             $keys[1] => $this->getPlaylistOrder(),
-            $keys[2] => $this->getSongId(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->aSong) {
-                $result['Song'] = $this->aSong->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            if (null !== $this->collSongs) {
+                $result['Songs'] = $this->collSongs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -701,9 +655,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
             case 1:
                 $this->setPlaylistOrder($value);
                 break;
-            case 2:
-                $this->setSongId($value);
-                break;
         } // switch()
     }
 
@@ -730,7 +681,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
 
         if (array_key_exists($keys[0], $arr)) $this->setPlaylistId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setPlaylistOrder($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setSongId($arr[$keys[2]]);
     }
 
     /**
@@ -744,7 +694,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
 
         if ($this->isColumnModified(PlaylistPeer::PLAYLIST_ID)) $criteria->add(PlaylistPeer::PLAYLIST_ID, $this->playlist_id);
         if ($this->isColumnModified(PlaylistPeer::PLAYLIST_ORDER)) $criteria->add(PlaylistPeer::PLAYLIST_ORDER, $this->playlist_order);
-        if ($this->isColumnModified(PlaylistPeer::SONG_ID)) $criteria->add(PlaylistPeer::SONG_ID, $this->song_id);
 
         return $criteria;
     }
@@ -809,7 +758,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setPlaylistOrder($this->getPlaylistOrder());
-        $copyObj->setSongId($this->getSongId());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -817,6 +765,12 @@ abstract class BasePlaylist extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
+
+            foreach ($this->getSongs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSong($relObj->copy($deepCopy));
+                }
+            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -868,56 +822,338 @@ abstract class BasePlaylist extends BaseObject implements Persistent
         return self::$peer;
     }
 
+
     /**
-     * Declares an association between this object and a Song object.
+     * Initializes a collection based on the name of a relation.
+     * Avoids crafting an 'init[$relationName]s' method name
+     * that wouldn't work when StandardEnglishPluralizer is used.
      *
-     * @param             Song $v
+     * @param string $relationName The name of the relation to initialize
+     * @return void
+     */
+    public function initRelation($relationName)
+    {
+        if ('Song' == $relationName) {
+            $this->initSongs();
+        }
+    }
+
+    /**
+     * Clears out the collSongs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
      * @return Playlist The current object (for fluent API support)
+     * @see        addSongs()
+     */
+    public function clearSongs()
+    {
+        $this->collSongs = null; // important to set this to null since that means it is uninitialized
+        $this->collSongsPartial = null;
+
+        return $this;
+    }
+
+    /**
+     * reset is the collSongs collection loaded partially
+     *
+     * @return void
+     */
+    public function resetPartialSongs($v = true)
+    {
+        $this->collSongsPartial = $v;
+    }
+
+    /**
+     * Initializes the collSongs collection.
+     *
+     * By default this just sets the collSongs collection to an empty array (like clearcollSongs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSongs($overrideExisting = true)
+    {
+        if (null !== $this->collSongs && !$overrideExisting) {
+            return;
+        }
+        $this->collSongs = new PropelObjectCollection();
+        $this->collSongs->setModel('Song');
+    }
+
+    /**
+     * Gets an array of Song objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this Playlist is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @return PropelObjectCollection|Song[] List of Song objects
      * @throws PropelException
      */
-    public function setSong(Song $v = null)
+    public function getSongs($criteria = null, PropelPDO $con = null)
     {
-        if ($v === null) {
-            $this->setSongId(NULL);
-        } else {
-            $this->setSongId($v->getSongId());
+        $partial = $this->collSongsPartial && !$this->isNew();
+        if (null === $this->collSongs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSongs) {
+                // return empty collection
+                $this->initSongs();
+            } else {
+                $collSongs = SongQuery::create(null, $criteria)
+                    ->filterByPlaylist($this)
+                    ->find($con);
+                if (null !== $criteria) {
+                    if (false !== $this->collSongsPartial && count($collSongs)) {
+                      $this->initSongs(false);
+
+                      foreach($collSongs as $obj) {
+                        if (false == $this->collSongs->contains($obj)) {
+                          $this->collSongs->append($obj);
+                        }
+                      }
+
+                      $this->collSongsPartial = true;
+                    }
+
+                    $collSongs->getInternalIterator()->rewind();
+                    return $collSongs;
+                }
+
+                if($partial && $this->collSongs) {
+                    foreach($this->collSongs as $obj) {
+                        if($obj->isNew()) {
+                            $collSongs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSongs = $collSongs;
+                $this->collSongsPartial = false;
+            }
         }
 
-        $this->aSong = $v;
+        return $this->collSongs;
+    }
 
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Song object, it will not be re-added.
-        if ($v !== null) {
-            $v->addPlaylist($this);
+    /**
+     * Sets a collection of Song objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param PropelCollection $songs A Propel collection.
+     * @param PropelPDO $con Optional connection object
+     * @return Playlist The current object (for fluent API support)
+     */
+    public function setSongs(PropelCollection $songs, PropelPDO $con = null)
+    {
+        $songsToDelete = $this->getSongs(new Criteria(), $con)->diff($songs);
+
+        $this->songsScheduledForDeletion = unserialize(serialize($songsToDelete));
+
+        foreach ($songsToDelete as $songRemoved) {
+            $songRemoved->setPlaylist(null);
         }
 
+        $this->collSongs = null;
+        foreach ($songs as $song) {
+            $this->addSong($song);
+        }
+
+        $this->collSongs = $songs;
+        $this->collSongsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related Song objects.
+     *
+     * @param Criteria $criteria
+     * @param boolean $distinct
+     * @param PropelPDO $con
+     * @return int             Count of related Song objects.
+     * @throws PropelException
+     */
+    public function countSongs(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    {
+        $partial = $this->collSongsPartial && !$this->isNew();
+        if (null === $this->collSongs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSongs) {
+                return 0;
+            }
+
+            if($partial && !$criteria) {
+                return count($this->getSongs());
+            }
+            $query = SongQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterByPlaylist($this)
+                ->count($con);
+        }
+
+        return count($this->collSongs);
+    }
+
+    /**
+     * Method called to associate a Song object to this object
+     * through the Song foreign key attribute.
+     *
+     * @param    Song $l Song
+     * @return Playlist The current object (for fluent API support)
+     */
+    public function addSong(Song $l)
+    {
+        if ($this->collSongs === null) {
+            $this->initSongs();
+            $this->collSongsPartial = true;
+        }
+        if (!in_array($l, $this->collSongs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddSong($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param	Song $song The song object to add.
+     */
+    protected function doAddSong($song)
+    {
+        $this->collSongs[]= $song;
+        $song->setPlaylist($this);
+    }
+
+    /**
+     * @param	Song $song The song object to remove.
+     * @return Playlist The current object (for fluent API support)
+     */
+    public function removeSong($song)
+    {
+        if ($this->getSongs()->contains($song)) {
+            $this->collSongs->remove($this->collSongs->search($song));
+            if (null === $this->songsScheduledForDeletion) {
+                $this->songsScheduledForDeletion = clone $this->collSongs;
+                $this->songsScheduledForDeletion->clear();
+            }
+            $this->songsScheduledForDeletion[]= clone $song;
+            $song->setPlaylist(null);
+        }
 
         return $this;
     }
 
 
     /**
-     * Get the associated Song object
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Playlist is new, it will return
+     * an empty collection; or if this Playlist has previously
+     * been saved, it will retrieve related Songs from storage.
      *
-     * @param PropelPDO $con Optional Connection object.
-     * @param $doQuery Executes a query to get the object if required
-     * @return Song The associated Song object.
-     * @throws PropelException
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Playlist.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Song[] List of Song objects
      */
-    public function getSong(PropelPDO $con = null, $doQuery = true)
+    public function getSongsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        if ($this->aSong === null && ($this->song_id !== null) && $doQuery) {
-            $this->aSong = SongQuery::create()->findPk($this->song_id, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aSong->addPlaylists($this);
-             */
-        }
+        $query = SongQuery::create(null, $criteria);
+        $query->joinWith('User', $join_behavior);
 
-        return $this->aSong;
+        return $this->getSongs($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Playlist is new, it will return
+     * an empty collection; or if this Playlist has previously
+     * been saved, it will retrieve related Songs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Playlist.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Song[] List of Song objects
+     */
+    public function getSongsJoinArtiste($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = SongQuery::create(null, $criteria);
+        $query->joinWith('Artiste', $join_behavior);
+
+        return $this->getSongs($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Playlist is new, it will return
+     * an empty collection; or if this Playlist has previously
+     * been saved, it will retrieve related Songs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Playlist.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Song[] List of Song objects
+     */
+    public function getSongsJoinAlbum($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = SongQuery::create(null, $criteria);
+        $query->joinWith('Album', $join_behavior);
+
+        return $this->getSongs($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Playlist is new, it will return
+     * an empty collection; or if this Playlist has previously
+     * been saved, it will retrieve related Songs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Playlist.
+     *
+     * @param Criteria $criteria optional Criteria object to narrow the query
+     * @param PropelPDO $con optional connection object
+     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return PropelObjectCollection|Song[] List of Song objects
+     */
+    public function getSongsJoinSort($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $query = SongQuery::create(null, $criteria);
+        $query->joinWith('Sort', $join_behavior);
+
+        return $this->getSongs($query, $con);
     }
 
     /**
@@ -927,7 +1163,6 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     {
         $this->playlist_id = null;
         $this->playlist_order = null;
-        $this->song_id = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->alreadyInClearAllReferencesDeep = false;
@@ -950,14 +1185,19 @@ abstract class BasePlaylist extends BaseObject implements Persistent
     {
         if ($deep && !$this->alreadyInClearAllReferencesDeep) {
             $this->alreadyInClearAllReferencesDeep = true;
-            if ($this->aSong instanceof Persistent) {
-              $this->aSong->clearAllReferences($deep);
+            if ($this->collSongs) {
+                foreach ($this->collSongs as $o) {
+                    $o->clearAllReferences($deep);
+                }
             }
 
             $this->alreadyInClearAllReferencesDeep = false;
         } // if ($deep)
 
-        $this->aSong = null;
+        if ($this->collSongs instanceof PropelCollection) {
+            $this->collSongs->clearIterator();
+        }
+        $this->collSongs = null;
     }
 
     /**

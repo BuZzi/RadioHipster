@@ -24,13 +24,13 @@ abstract class BaseSongPeer
     const TM_CLASS = 'SongTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 8;
+    const NUM_COLUMNS = 9;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 8;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /** the column name for the song_id field */
     const SONG_ID = 'song.song_id';
@@ -56,6 +56,9 @@ abstract class BaseSongPeer
     /** the column name for the sort_id field */
     const SORT_ID = 'song.sort_id';
 
+    /** the column name for the playlist_id field */
+    const PLAYLIST_ID = 'song.playlist_id';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -75,12 +78,12 @@ abstract class BaseSongPeer
      * e.g. SongPeer::$fieldNames[SongPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('SongId', 'SongName', 'SongYear', 'SongDuration', 'UserId', 'ArtisteId', 'AlbumId', 'SortId', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('songId', 'songName', 'songYear', 'songDuration', 'userId', 'artisteId', 'albumId', 'sortId', ),
-        BasePeer::TYPE_COLNAME => array (SongPeer::SONG_ID, SongPeer::SONG_NAME, SongPeer::SONG_YEAR, SongPeer::SONG_DURATION, SongPeer::USER_ID, SongPeer::ARTISTE_ID, SongPeer::ALBUM_ID, SongPeer::SORT_ID, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('SONG_ID', 'SONG_NAME', 'SONG_YEAR', 'SONG_DURATION', 'USER_ID', 'ARTISTE_ID', 'ALBUM_ID', 'SORT_ID', ),
-        BasePeer::TYPE_FIELDNAME => array ('song_id', 'song_name', 'song_year', 'song_duration', 'user_id', 'artiste_id', 'album_id', 'sort_id', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('SongId', 'SongName', 'SongYear', 'SongDuration', 'UserId', 'ArtisteId', 'AlbumId', 'SortId', 'PlaylistId', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('songId', 'songName', 'songYear', 'songDuration', 'userId', 'artisteId', 'albumId', 'sortId', 'playlistId', ),
+        BasePeer::TYPE_COLNAME => array (SongPeer::SONG_ID, SongPeer::SONG_NAME, SongPeer::SONG_YEAR, SongPeer::SONG_DURATION, SongPeer::USER_ID, SongPeer::ARTISTE_ID, SongPeer::ALBUM_ID, SongPeer::SORT_ID, SongPeer::PLAYLIST_ID, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('SONG_ID', 'SONG_NAME', 'SONG_YEAR', 'SONG_DURATION', 'USER_ID', 'ARTISTE_ID', 'ALBUM_ID', 'SORT_ID', 'PLAYLIST_ID', ),
+        BasePeer::TYPE_FIELDNAME => array ('song_id', 'song_name', 'song_year', 'song_duration', 'user_id', 'artiste_id', 'album_id', 'sort_id', 'playlist_id', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -90,12 +93,12 @@ abstract class BaseSongPeer
      * e.g. SongPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('SongId' => 0, 'SongName' => 1, 'SongYear' => 2, 'SongDuration' => 3, 'UserId' => 4, 'ArtisteId' => 5, 'AlbumId' => 6, 'SortId' => 7, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('songId' => 0, 'songName' => 1, 'songYear' => 2, 'songDuration' => 3, 'userId' => 4, 'artisteId' => 5, 'albumId' => 6, 'sortId' => 7, ),
-        BasePeer::TYPE_COLNAME => array (SongPeer::SONG_ID => 0, SongPeer::SONG_NAME => 1, SongPeer::SONG_YEAR => 2, SongPeer::SONG_DURATION => 3, SongPeer::USER_ID => 4, SongPeer::ARTISTE_ID => 5, SongPeer::ALBUM_ID => 6, SongPeer::SORT_ID => 7, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('SONG_ID' => 0, 'SONG_NAME' => 1, 'SONG_YEAR' => 2, 'SONG_DURATION' => 3, 'USER_ID' => 4, 'ARTISTE_ID' => 5, 'ALBUM_ID' => 6, 'SORT_ID' => 7, ),
-        BasePeer::TYPE_FIELDNAME => array ('song_id' => 0, 'song_name' => 1, 'song_year' => 2, 'song_duration' => 3, 'user_id' => 4, 'artiste_id' => 5, 'album_id' => 6, 'sort_id' => 7, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+        BasePeer::TYPE_PHPNAME => array ('SongId' => 0, 'SongName' => 1, 'SongYear' => 2, 'SongDuration' => 3, 'UserId' => 4, 'ArtisteId' => 5, 'AlbumId' => 6, 'SortId' => 7, 'PlaylistId' => 8, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('songId' => 0, 'songName' => 1, 'songYear' => 2, 'songDuration' => 3, 'userId' => 4, 'artisteId' => 5, 'albumId' => 6, 'sortId' => 7, 'playlistId' => 8, ),
+        BasePeer::TYPE_COLNAME => array (SongPeer::SONG_ID => 0, SongPeer::SONG_NAME => 1, SongPeer::SONG_YEAR => 2, SongPeer::SONG_DURATION => 3, SongPeer::USER_ID => 4, SongPeer::ARTISTE_ID => 5, SongPeer::ALBUM_ID => 6, SongPeer::SORT_ID => 7, SongPeer::PLAYLIST_ID => 8, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('SONG_ID' => 0, 'SONG_NAME' => 1, 'SONG_YEAR' => 2, 'SONG_DURATION' => 3, 'USER_ID' => 4, 'ARTISTE_ID' => 5, 'ALBUM_ID' => 6, 'SORT_ID' => 7, 'PLAYLIST_ID' => 8, ),
+        BasePeer::TYPE_FIELDNAME => array ('song_id' => 0, 'song_name' => 1, 'song_year' => 2, 'song_duration' => 3, 'user_id' => 4, 'artiste_id' => 5, 'album_id' => 6, 'sort_id' => 7, 'playlist_id' => 8, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -177,6 +180,7 @@ abstract class BaseSongPeer
             $criteria->addSelectColumn(SongPeer::ARTISTE_ID);
             $criteria->addSelectColumn(SongPeer::ALBUM_ID);
             $criteria->addSelectColumn(SongPeer::SORT_ID);
+            $criteria->addSelectColumn(SongPeer::PLAYLIST_ID);
         } else {
             $criteria->addSelectColumn($alias . '.song_id');
             $criteria->addSelectColumn($alias . '.song_name');
@@ -186,6 +190,7 @@ abstract class BaseSongPeer
             $criteria->addSelectColumn($alias . '.artiste_id');
             $criteria->addSelectColumn($alias . '.album_id');
             $criteria->addSelectColumn($alias . '.sort_id');
+            $criteria->addSelectColumn($alias . '.playlist_id');
         }
     }
 
@@ -392,9 +397,6 @@ abstract class BaseSongPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in PlaylistPeer instance pool,
-        // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        PlaylistPeer::clearInstancePool();
     }
 
     /**
@@ -697,6 +699,57 @@ abstract class BaseSongPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related Playlist table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinPlaylist(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(SongPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            SongPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(SongPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(SongPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Selects a collection of Song objects pre-filled with their User objects.
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -965,6 +1018,73 @@ abstract class BaseSongPeer
 
 
     /**
+     * Selects a collection of Song objects pre-filled with their Playlist objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Song objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinPlaylist(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(SongPeer::DATABASE_NAME);
+        }
+
+        SongPeer::addSelectColumns($criteria);
+        $startcol = SongPeer::NUM_HYDRATE_COLUMNS;
+        PlaylistPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = SongPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = SongPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = SongPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                SongPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = PlaylistPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = PlaylistPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    PlaylistPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (Song) to $obj2 (Playlist)
+                $obj2->addSong($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining all related tables
      *
      * @param      Criteria $criteria
@@ -1007,6 +1127,8 @@ abstract class BaseSongPeer
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1054,6 +1176,9 @@ abstract class BaseSongPeer
         SortPeer::addSelectColumns($criteria);
         $startcol6 = $startcol5 + SortPeer::NUM_HYDRATE_COLUMNS;
 
+        PlaylistPeer::addSelectColumns($criteria);
+        $startcol7 = $startcol6 + PlaylistPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
@@ -1061,6 +1186,8 @@ abstract class BaseSongPeer
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
         $stmt = BasePeer::doSelect($criteria, $con);
         $results = array();
@@ -1151,6 +1278,24 @@ abstract class BaseSongPeer
                 $obj5->addSong($obj1);
             } // if joined row not null
 
+            // Add objects for joined Playlist rows
+
+            $key6 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+            if ($key6 !== null) {
+                $obj6 = PlaylistPeer::getInstanceFromPool($key6);
+                if (!$obj6) {
+
+                    $cls = PlaylistPeer::getOMClass();
+
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    PlaylistPeer::addInstanceToPool($obj6, $key6);
+                } // if obj6 loaded
+
+                // Add the $obj1 (Song) to the collection in $obj6 (Playlist)
+                $obj6->addSong($obj1);
+            } // if joined row not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1200,6 +1345,8 @@ abstract class BaseSongPeer
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1256,6 +1403,8 @@ abstract class BaseSongPeer
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
 
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1310,6 +1459,8 @@ abstract class BaseSongPeer
         $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
         $stmt = BasePeer::doCount($criteria, $con);
 
@@ -1366,6 +1517,65 @@ abstract class BaseSongPeer
 
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related Playlist table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptPlaylist(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(SongPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            SongPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(SongPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(SongPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
         $stmt = BasePeer::doCount($criteria, $con);
 
         if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1412,11 +1622,16 @@ abstract class BaseSongPeer
         SortPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + SortPeer::NUM_HYDRATE_COLUMNS;
 
+        PlaylistPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PlaylistPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1493,6 +1708,25 @@ abstract class BaseSongPeer
 
             } // if joined row is not null
 
+                // Add objects for joined Playlist rows
+
+                $key5 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PlaylistPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PlaylistPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PlaylistPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj5 (Playlist)
+                $obj5->addSong($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1534,11 +1768,16 @@ abstract class BaseSongPeer
         SortPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + SortPeer::NUM_HYDRATE_COLUMNS;
 
+        PlaylistPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PlaylistPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1615,6 +1854,25 @@ abstract class BaseSongPeer
 
             } // if joined row is not null
 
+                // Add objects for joined Playlist rows
+
+                $key5 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PlaylistPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PlaylistPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PlaylistPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj5 (Playlist)
+                $obj5->addSong($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1656,11 +1914,16 @@ abstract class BaseSongPeer
         SortPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + SortPeer::NUM_HYDRATE_COLUMNS;
 
+        PlaylistPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PlaylistPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1737,6 +2000,25 @@ abstract class BaseSongPeer
 
             } // if joined row is not null
 
+                // Add objects for joined Playlist rows
+
+                $key5 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PlaylistPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PlaylistPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PlaylistPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj5 (Playlist)
+                $obj5->addSong($obj1);
+
+            } // if joined row is not null
+
             $results[] = $obj1;
         }
         $stmt->closeCursor();
@@ -1778,11 +2060,16 @@ abstract class BaseSongPeer
         AlbumPeer::addSelectColumns($criteria);
         $startcol5 = $startcol4 + AlbumPeer::NUM_HYDRATE_COLUMNS;
 
+        PlaylistPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + PlaylistPeer::NUM_HYDRATE_COLUMNS;
+
         $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
 
         $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::PLAYLIST_ID, PlaylistPeer::PLAYLIST_ID, $join_behavior);
 
 
         $stmt = BasePeer::doSelect($criteria, $con);
@@ -1856,6 +2143,171 @@ abstract class BaseSongPeer
 
                 // Add the $obj1 (Song) to the collection in $obj4 (Album)
                 $obj4->addSong($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Playlist rows
+
+                $key5 = PlaylistPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = PlaylistPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = PlaylistPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    PlaylistPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj5 (Playlist)
+                $obj5->addSong($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of Song objects pre-filled with all related objects except Playlist.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of Song objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptPlaylist(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(SongPeer::DATABASE_NAME);
+        }
+
+        SongPeer::addSelectColumns($criteria);
+        $startcol2 = SongPeer::NUM_HYDRATE_COLUMNS;
+
+        UserPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + UserPeer::NUM_HYDRATE_COLUMNS;
+
+        ArtistePeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + ArtistePeer::NUM_HYDRATE_COLUMNS;
+
+        AlbumPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + AlbumPeer::NUM_HYDRATE_COLUMNS;
+
+        SortPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + SortPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(SongPeer::USER_ID, UserPeer::USER_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::ARTISTE_ID, ArtistePeer::ARTISTE_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::ALBUM_ID, AlbumPeer::ALBUM_ID, $join_behavior);
+
+        $criteria->addJoin(SongPeer::SORT_ID, SortPeer::SORT_ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = SongPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = SongPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = SongPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                SongPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined User rows
+
+                $key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = UserPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = UserPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    UserPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj2 (User)
+                $obj2->addSong($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Artiste rows
+
+                $key3 = ArtistePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = ArtistePeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = ArtistePeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    ArtistePeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj3 (Artiste)
+                $obj3->addSong($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Album rows
+
+                $key4 = AlbumPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = AlbumPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = AlbumPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    AlbumPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj4 (Album)
+                $obj4->addSong($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Sort rows
+
+                $key5 = SortPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = SortPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = SortPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    SortPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (Song) to the collection in $obj5 (Sort)
+                $obj5->addSong($obj1);
 
             } // if joined row is not null
 
@@ -1999,7 +2451,6 @@ abstract class BaseSongPeer
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
-            $affectedRows += SongPeer::doOnDeleteCascade(new Criteria(SongPeer::DATABASE_NAME), $con);
             $affectedRows += BasePeer::doDeleteAll(SongPeer::TABLE_NAME, $con, SongPeer::DATABASE_NAME);
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
@@ -2033,14 +2484,24 @@ abstract class BaseSongPeer
         }
 
         if ($values instanceof Criteria) {
+            // invalidate the cache for all objects of this type, since we have no
+            // way of knowing (without running a query) what objects should be invalidated
+            // from the cache based on this Criteria.
+            SongPeer::clearInstancePool();
             // rename for clarity
             $criteria = clone $values;
         } elseif ($values instanceof Song) { // it's a model object
+            // invalidate the cache for this single object
+            SongPeer::removeInstanceFromPool($values);
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
             $criteria = new Criteria(SongPeer::DATABASE_NAME);
             $criteria->add(SongPeer::SONG_ID, (array) $values, Criteria::IN);
+            // invalidate the cache for this object(s)
+            foreach ((array) $values as $singleval) {
+                SongPeer::removeInstanceFromPool($singleval);
+            }
         }
 
         // Set the correct dbName
@@ -2053,23 +2514,6 @@ abstract class BaseSongPeer
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
 
-            // cloning the Criteria in case it's modified by doSelect() or doSelectStmt()
-            $c = clone $criteria;
-            $affectedRows += SongPeer::doOnDeleteCascade($c, $con);
-
-            // Because this db requires some delete cascade/set null emulation, we have to
-            // clear the cached instance *after* the emulation has happened (since
-            // instances get re-added by the select statement contained therein).
-            if ($values instanceof Criteria) {
-                SongPeer::clearInstancePool();
-            } elseif ($values instanceof Song) { // it's a model object
-                SongPeer::removeInstanceFromPool($values);
-            } else { // it's a primary key, or an array of pks
-                foreach ((array) $values as $singleval) {
-                    SongPeer::removeInstanceFromPool($singleval);
-                }
-            }
-
             $affectedRows += BasePeer::doDelete($criteria, $con);
             SongPeer::clearRelatedInstancePool();
             $con->commit();
@@ -2079,39 +2523,6 @@ abstract class BaseSongPeer
             $con->rollBack();
             throw $e;
         }
-    }
-
-    /**
-     * This is a method for emulating ON DELETE CASCADE for DBs that don't support this
-     * feature (like MySQL or SQLite).
-     *
-     * This method is not very speedy because it must perform a query first to get
-     * the implicated records and then perform the deletes by calling those Peer classes.
-     *
-     * This method should be used within a transaction if possible.
-     *
-     * @param      Criteria $criteria
-     * @param      PropelPDO $con
-     * @return int The number of affected rows (if supported by underlying database driver).
-     */
-    protected static function doOnDeleteCascade(Criteria $criteria, PropelPDO $con)
-    {
-        // initialize var to track total num of affected rows
-        $affectedRows = 0;
-
-        // first find the objects that are implicated by the $criteria
-        $objects = SongPeer::doSelect($criteria, $con);
-        foreach ($objects as $obj) {
-
-
-            // delete related Playlist objects
-            $criteria = new Criteria(PlaylistPeer::DATABASE_NAME);
-
-            $criteria->add(PlaylistPeer::SONG_ID, $obj->getSongId());
-            $affectedRows += PlaylistPeer::doDelete($criteria, $con);
-        }
-
-        return $affectedRows;
     }
 
     /**

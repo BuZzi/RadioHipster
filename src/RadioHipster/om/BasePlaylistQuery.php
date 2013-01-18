@@ -8,11 +8,9 @@
  *
  * @method PlaylistQuery orderByPlaylistId($order = Criteria::ASC) Order by the playlist_id column
  * @method PlaylistQuery orderByPlaylistOrder($order = Criteria::ASC) Order by the playlist_order column
- * @method PlaylistQuery orderBySongId($order = Criteria::ASC) Order by the song_id column
  *
  * @method PlaylistQuery groupByPlaylistId() Group by the playlist_id column
  * @method PlaylistQuery groupByPlaylistOrder() Group by the playlist_order column
- * @method PlaylistQuery groupBySongId() Group by the song_id column
  *
  * @method PlaylistQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method PlaylistQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -26,11 +24,9 @@
  * @method Playlist findOneOrCreate(PropelPDO $con = null) Return the first Playlist matching the query, or a new Playlist object populated from the query conditions when no match is found
  *
  * @method Playlist findOneByPlaylistOrder(int $playlist_order) Return the first Playlist filtered by the playlist_order column
- * @method Playlist findOneBySongId(int $song_id) Return the first Playlist filtered by the song_id column
  *
  * @method array findByPlaylistId(int $playlist_id) Return Playlist objects filtered by the playlist_id column
  * @method array findByPlaylistOrder(int $playlist_order) Return Playlist objects filtered by the playlist_order column
- * @method array findBySongId(int $song_id) Return Playlist objects filtered by the song_id column
  *
  * @package    propel.generator.RadioHipster.om
  */
@@ -134,7 +130,7 @@ abstract class BasePlaylistQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `playlist_id`, `playlist_order`, `song_id` FROM `playlist` WHERE `playlist_id` = :p0';
+        $sql = 'SELECT `playlist_id`, `playlist_order` FROM `playlist` WHERE `playlist_id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -308,53 +304,9 @@ abstract class BasePlaylistQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the song_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterBySongId(1234); // WHERE song_id = 1234
-     * $query->filterBySongId(array(12, 34)); // WHERE song_id IN (12, 34)
-     * $query->filterBySongId(array('min' => 12)); // WHERE song_id >= 12
-     * $query->filterBySongId(array('max' => 12)); // WHERE song_id <= 12
-     * </code>
-     *
-     * @see       filterBySong()
-     *
-     * @param     mixed $songId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return PlaylistQuery The current query, for fluid interface
-     */
-    public function filterBySongId($songId = null, $comparison = null)
-    {
-        if (is_array($songId)) {
-            $useMinMax = false;
-            if (isset($songId['min'])) {
-                $this->addUsingAlias(PlaylistPeer::SONG_ID, $songId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($songId['max'])) {
-                $this->addUsingAlias(PlaylistPeer::SONG_ID, $songId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PlaylistPeer::SONG_ID, $songId, $comparison);
-    }
-
-    /**
      * Filter the query by a related Song object
      *
-     * @param   Song|PropelObjectCollection $song The related object(s) to use as filter
+     * @param   Song|PropelObjectCollection $song  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 PlaylistQuery The current query, for fluid interface
@@ -364,14 +316,12 @@ abstract class BasePlaylistQuery extends ModelCriteria
     {
         if ($song instanceof Song) {
             return $this
-                ->addUsingAlias(PlaylistPeer::SONG_ID, $song->getSongId(), $comparison);
+                ->addUsingAlias(PlaylistPeer::PLAYLIST_ID, $song->getPlaylistId(), $comparison);
         } elseif ($song instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
             return $this
-                ->addUsingAlias(PlaylistPeer::SONG_ID, $song->toKeyValue('PrimaryKey', 'SongId'), $comparison);
+                ->useSongQuery()
+                ->filterByPrimaryKeys($song->getPrimaryKeys())
+                ->endUse();
         } else {
             throw new PropelException('filterBySong() only accepts arguments of type Song or PropelCollection');
         }

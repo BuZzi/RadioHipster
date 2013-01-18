@@ -37,11 +37,9 @@ class PlaylistTableMap extends TableMap
         $this->setClassname('Playlist');
         $this->setPackage('RadioHipster');
         $this->setUseIdGenerator(true);
-        $this->setIsCrossRef(true);
         // columns
         $this->addPrimaryKey('playlist_id', 'PlaylistId', 'INTEGER', true, null, null);
         $this->addColumn('playlist_order', 'PlaylistOrder', 'INTEGER', true, null, null);
-        $this->addForeignKey('song_id', 'SongId', 'INTEGER', 'song', 'song_id', true, null, null);
         // validators
     } // initialize()
 
@@ -50,7 +48,7 @@ class PlaylistTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Song', 'Song', RelationMap::MANY_TO_ONE, array('song_id' => 'song_id', ), 'CASCADE', null);
+        $this->addRelation('Song', 'Song', RelationMap::ONE_TO_MANY, array('playlist_id' => 'playlist_id', ), 'CASCADE', null, 'Songs');
     } // buildRelations()
 
 } // PlaylistTableMap

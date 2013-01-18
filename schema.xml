@@ -9,6 +9,7 @@
         <column name="artiste_id" type="integer" size="255" required="true" />
         <column name="album_id" type="integer" size="255" required="true" />
         <column name="sort_id" type="integer" size="255" required="true" />
+        <column name="playlist_id" type="integer" size="255" required="true" />
         <foreign-key foreignTable="user" onDelete="CASCADE">
             <reference local="user_id" foreign="user_id"/>
         </foreign-key>
@@ -21,19 +22,18 @@
         <foreign-key foreignTable="sort" onDelete="CASCADE">
             <reference local="sort_id" foreign="sort_id"/>
         </foreign-key>
+        <foreign-key foreignTable="playlist" onDelete="CASCADE">
+            <reference local="playlist_id" foreign="playlist_id"/>
+        </foreign-key>
     </table>
     <table name="user" phpName="User">
         <column name="user_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
         <column name="user_name" type="varchar" size="255" required="true" />
         <column name="user_email" type="varchar" size="255" required="true" />
     </table>
-    <table name="playlist" phpName="Playlist" isCrossRef="true">
+    <table name="playlist" phpName="Playlist">
         <column name="playlist_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>
         <column name="playlist_order" type="integer" required="true" />
-        <column name="song_id" type="integer" required="true" />
-        <foreign-key foreignTable="song" onDelete="CASCADE">
-            <reference local="song_id" foreign="song_id"/>
-        </foreign-key>
     </table>
     <table name="artiste" phpName="Artiste">
         <column name="artiste_id" type="integer" required="true" primaryKey="true" autoIncrement="true"/>

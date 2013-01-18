@@ -14,6 +14,7 @@
  * @method SongQuery orderByArtisteId($order = Criteria::ASC) Order by the artiste_id column
  * @method SongQuery orderByAlbumId($order = Criteria::ASC) Order by the album_id column
  * @method SongQuery orderBySortId($order = Criteria::ASC) Order by the sort_id column
+ * @method SongQuery orderByPlaylistId($order = Criteria::ASC) Order by the playlist_id column
  *
  * @method SongQuery groupBySongId() Group by the song_id column
  * @method SongQuery groupBySongName() Group by the song_name column
@@ -23,6 +24,7 @@
  * @method SongQuery groupByArtisteId() Group by the artiste_id column
  * @method SongQuery groupByAlbumId() Group by the album_id column
  * @method SongQuery groupBySortId() Group by the sort_id column
+ * @method SongQuery groupByPlaylistId() Group by the playlist_id column
  *
  * @method SongQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method SongQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -58,6 +60,7 @@
  * @method Song findOneByArtisteId(int $artiste_id) Return the first Song filtered by the artiste_id column
  * @method Song findOneByAlbumId(int $album_id) Return the first Song filtered by the album_id column
  * @method Song findOneBySortId(int $sort_id) Return the first Song filtered by the sort_id column
+ * @method Song findOneByPlaylistId(int $playlist_id) Return the first Song filtered by the playlist_id column
  *
  * @method array findBySongId(int $song_id) Return Song objects filtered by the song_id column
  * @method array findBySongName(string $song_name) Return Song objects filtered by the song_name column
@@ -67,6 +70,7 @@
  * @method array findByArtisteId(int $artiste_id) Return Song objects filtered by the artiste_id column
  * @method array findByAlbumId(int $album_id) Return Song objects filtered by the album_id column
  * @method array findBySortId(int $sort_id) Return Song objects filtered by the sort_id column
+ * @method array findByPlaylistId(int $playlist_id) Return Song objects filtered by the playlist_id column
  *
  * @package    propel.generator.RadioHipster.om
  */
@@ -170,7 +174,7 @@ abstract class BaseSongQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `song_id`, `song_name`, `song_year`, `song_duration`, `user_id`, `artiste_id`, `album_id`, `sort_id` FROM `song` WHERE `song_id` = :p0';
+        $sql = 'SELECT `song_id`, `song_name`, `song_year`, `song_duration`, `user_id`, `artiste_id`, `album_id`, `sort_id`, `playlist_id` FROM `song` WHERE `song_id` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -578,6 +582,50 @@ abstract class BaseSongQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the playlist_id column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPlaylistId(1234); // WHERE playlist_id = 1234
+     * $query->filterByPlaylistId(array(12, 34)); // WHERE playlist_id IN (12, 34)
+     * $query->filterByPlaylistId(array('min' => 12)); // WHERE playlist_id >= 12
+     * $query->filterByPlaylistId(array('max' => 12)); // WHERE playlist_id <= 12
+     * </code>
+     *
+     * @see       filterByPlaylist()
+     *
+     * @param     mixed $playlistId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return SongQuery The current query, for fluid interface
+     */
+    public function filterByPlaylistId($playlistId = null, $comparison = null)
+    {
+        if (is_array($playlistId)) {
+            $useMinMax = false;
+            if (isset($playlistId['min'])) {
+                $this->addUsingAlias(SongPeer::PLAYLIST_ID, $playlistId['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($playlistId['max'])) {
+                $this->addUsingAlias(SongPeer::PLAYLIST_ID, $playlistId['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SongPeer::PLAYLIST_ID, $playlistId, $comparison);
+    }
+
+    /**
      * Filter the query by a related User object
      *
      * @param   User|PropelObjectCollection $user The related object(s) to use as filter
@@ -884,7 +932,7 @@ abstract class BaseSongQuery extends ModelCriteria
     /**
      * Filter the query by a related Playlist object
      *
-     * @param   Playlist|PropelObjectCollection $playlist  the related object to use as filter
+     * @param   Playlist|PropelObjectCollection $playlist The related object(s) to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return                 SongQuery The current query, for fluid interface
@@ -894,12 +942,14 @@ abstract class BaseSongQuery extends ModelCriteria
     {
         if ($playlist instanceof Playlist) {
             return $this
-                ->addUsingAlias(SongPeer::SONG_ID, $playlist->getSongId(), $comparison);
+                ->addUsingAlias(SongPeer::PLAYLIST_ID, $playlist->getPlaylistId(), $comparison);
         } elseif ($playlist instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
             return $this
-                ->usePlaylistQuery()
-                ->filterByPrimaryKeys($playlist->getPrimaryKeys())
-                ->endUse();
+                ->addUsingAlias(SongPeer::PLAYLIST_ID, $playlist->toKeyValue('PrimaryKey', 'PlaylistId'), $comparison);
         } else {
             throw new PropelException('filterByPlaylist() only accepts arguments of type Playlist or PropelCollection');
         }

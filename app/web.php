@@ -84,6 +84,7 @@ $app->match('/upload', function (Request $request) use ($app) {
     if ('POST' == $request->getMethod()) {
         $form->bind($request);
 
+        // A FAIRE !!! isValid() !!!
         //if ($form->isValid()) {
             $data = $form->getData();
 
@@ -96,19 +97,17 @@ $app->match('/upload', function (Request $request) use ($app) {
             $song->setSongName($data['musicName'])
                  ->save();
 
+            $song->setUserId($user->getUserId())->save();
+
+            $song->setPlaylistId('1');
+
             $file = $data['song'];
-            // do something with the data
 
             $dir = __DIR__.'/../songs';
 
-            // A FAIRE, RECUPERER l'id de la chanson qu'on vient d'ajouter
-            // renommer la musique avec cet id de la base
-            // use the original file name
-            $file->move($dir, $file->getClientOriginalName());
+            $file->move($dir, $song->getSongId().'.mp3');
 
-            // faire une jolie vue comme quoi le formulaire a bien été rempli
-            // redirect somewhere
-            return $app->redirect('www.google.com');
+            return $app->redirect('/RadioHipster/web/home');
         //}
     }
 
@@ -121,12 +120,23 @@ $app->match('/upload', function (Request $request) use ($app) {
 //Controller Home
 $app->match('/home', function (Request $request) use ($app) {
 
-    $aPlaylist = PlaylistQuery::create()
+    // récupère toutes les chansons depuis la base
+    $songs = BaseSongQuery::create()
+        ->orderBySongId()
         ->find();
+
+    // récupère les 10 premières
+    $top = array();
+    for($i= 0; $i<10; $i++) {
+        $top[]= $songs[$i];
+    }
+
+
+    // appelle la vue twig home (param: top et songs)
+    return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
 
 
 });
-
 
 return $app;
 

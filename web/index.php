@@ -1,6 +1,5 @@
 <?php
 
-
 try {
     $app = require __DIR__ .'/../app/web.php';
     $app->run();

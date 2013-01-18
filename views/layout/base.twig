@@ -3,10 +3,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Radio Hype</title>
         <link rel="stylesheet" type="text/css" media="screen" href="../web/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="../web/css/style.css">
+        <link type="text/css" href="../web/css/jplayer.blue.monday.css" rel="stylesheet" />
     </head>
     <body>
-    {% block content %}
-        Le bloc base
+    <div id="wrapper">
+
+        {% block content %}
+            Le bloc base
+
+        {% endblock %}
+    </div>
+    {% block lecteur %}
+
     {% endblock %}
     </body>
 </html>

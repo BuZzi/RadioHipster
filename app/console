@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+set_time_limit(0);
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+$app = require __DIR__.'/bootstrap.php';
+
+$console = $app['console'];
+
+$console->register( 'cron' )
+	->setDescription('I love cron')
+	->setHelp('Usage: <info>.app/console cron</info>')
+	->setCode(
+	function(InputInterface $input, OutputInterface $output) use ($app)
+	{
+
+		$output->write( "yoyo ...\n");
+
+});
+
+$console->run();
+
+?>

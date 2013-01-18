@@ -46,6 +46,7 @@ class SongTableMap extends TableMap
         $this->addForeignKey('artiste_id', 'ArtisteId', 'INTEGER', 'artiste', 'artiste_id', true, 255, null);
         $this->addForeignKey('album_id', 'AlbumId', 'INTEGER', 'album', 'album_id', true, 255, null);
         $this->addForeignKey('sort_id', 'SortId', 'INTEGER', 'sort', 'sort_id', true, 255, null);
+        $this->addForeignKey('playlist_id', 'PlaylistId', 'INTEGER', 'playlist', 'playlist_id', true, 255, null);
         // validators
     } // initialize()
 
@@ -58,7 +59,7 @@ class SongTableMap extends TableMap
         $this->addRelation('Artiste', 'Artiste', RelationMap::MANY_TO_ONE, array('artiste_id' => 'artiste_id', ), 'CASCADE', null);
         $this->addRelation('Album', 'Album', RelationMap::MANY_TO_ONE, array('album_id' => 'album_id', ), 'CASCADE', null);
         $this->addRelation('Sort', 'Sort', RelationMap::MANY_TO_ONE, array('sort_id' => 'sort_id', ), 'CASCADE', null);
-        $this->addRelation('Playlist', 'Playlist', RelationMap::ONE_TO_MANY, array('song_id' => 'song_id', ), 'CASCADE', null, 'Playlists');
+        $this->addRelation('Playlist', 'Playlist', RelationMap::MANY_TO_ONE, array('playlist_id' => 'playlist_id', ), 'CASCADE', null);
     } // buildRelations()
 
 } // SongTableMap

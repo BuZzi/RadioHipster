@@ -19,11 +19,13 @@ CREATE TABLE `song`
     `artiste_id` INTEGER(255) NOT NULL,
     `album_id` INTEGER(255) NOT NULL,
     `sort_id` INTEGER(255) NOT NULL,
+    `playlist_id` INTEGER(255) NOT NULL,
     PRIMARY KEY (`song_id`),
     INDEX `song_FI_1` (`user_id`),
     INDEX `song_FI_2` (`artiste_id`),
     INDEX `song_FI_3` (`album_id`),
-    INDEX `song_FI_4` (`sort_id`)
+    INDEX `song_FI_4` (`sort_id`),
+    INDEX `song_FI_5` (`playlist_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
@@ -50,9 +52,7 @@ CREATE TABLE `playlist`
 (
     `playlist_id` INTEGER NOT NULL AUTO_INCREMENT,
     `playlist_order` INTEGER NOT NULL,
-    `song_id` INTEGER NOT NULL,
-    PRIMARY KEY (`playlist_id`),
-    INDEX `playlist_FI_1` (`song_id`)
+    PRIMARY KEY (`playlist_id`)
 ) ENGINE=MyISAM;
 
 -- ---------------------------------------------------------------------
