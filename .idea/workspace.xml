@@ -37,7 +37,7 @@
       <file leaf-file-name="web.php" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/web.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1" column="0" selection-start="6" selection-end="6" vertical-scroll-proportion="0.018867925">
+            <state line="129" column="5" selection-start="3975" selection-end="3975" vertical-scroll-proportion="0.6792453">
               <folding />
             </state>
           </provider>
@@ -46,7 +46,7 @@
       <file leaf-file-name="bootstrap.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/bootstrap.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="39" selection-start="46" selection-end="46" vertical-scroll-proportion="-1.25">
+            <state line="4" column="45" selection-start="48" selection-end="93" vertical-scroll-proportion="-2.5">
               <folding />
             </state>
           </provider>
@@ -448,14 +448,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/bootstrap.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="39" selection-start="46" selection-end="46" vertical-scroll-proportion="-1.25">
+        <state line="4" column="45" selection-start="48" selection-end="93" vertical-scroll-proportion="-2.5">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/web.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="0" selection-start="6" selection-end="6" vertical-scroll-proportion="0.018867925">
+        <state line="129" column="5" selection-start="3975" selection-end="3975" vertical-scroll-proportion="0.6792453">
           <folding />
         </state>
       </provider>

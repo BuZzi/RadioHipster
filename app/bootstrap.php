@@ -1,6 +1,7 @@
 <?php
 
 use Silex\Provider\FormServiceProvider;
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 $app = new Silex\Application();
@@ -11,7 +12,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 
-// Appel des services pour les formulaire
+// Appel des services pour les formulaires
 $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new FormServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
