@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $app = require __DIR__.'/bootstrap.php';
 
-$app->mount('home', require_once __DIR__.'/home.php');
+//$app->mount('home', require_once __DIR__.'/home.php');
 
 
 // CONTROLLER PAGE UPLOAD
