@@ -6,11 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $app = require __DIR__.'/bootstrap.php';
 
-//$app->mount('home', require_once __DIR__.'/home.php');
-
-
 // CONTROLLER PAGE UPLOAD
-// Closure lorsque l'url /upload est appellée
 $app->match('/upload', function (Request $request) use ($app) {
 
     $form = $app['form.factory']->CreateBuilder('form')
@@ -87,36 +83,60 @@ $app->match('/upload', function (Request $request) use ($app) {
     if ('POST' == $request->getMethod()) {
         $form->bind($request);
 
-
-        if ($form->isValid()) {
+        //if ($form->isValid()) {
             $data = $form->getData();
+
+            $user = new User();
+            $user->setUserEmail($data['email'])
+                 ->setUserName($data['userName'])
+                 ->save();
+
+            $song = new Song();
+            $song->setSongName($data['musicName'])
+                 ->save();
 
             $file = $data['song'];
             // do something with the data
 
+            $dir = __DIR__.'/../songs';
 
+            // A FAIRE, RECUPERER l'id de la chanson qu'on vient d'ajouter
+            // renommer la musique avec cet id de la base
             // use the original file name
             $file->move($dir, $file->getClientOriginalName());
 
-            // compute a random name and try to guess the extension (more secure)
-            $extension = $file->guessExtension();
-            if (!$extension) {
-                // extension cannot be guessed
-                $extension = 'bin';
-            }
-            $file->move($dir, $id.'.'.$extension);
-
+            // faire une jolie vue comme quoi le formulaire a bien été rempli
             // redirect somewhere
             return $app->redirect('www.google.com');
-        }
+        //}
     }
 
     // display the form
     return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
-    ->method('GET|POST');
+->method('GET|POST');
 
-/**$app->get('/{page}', function ($page) use ($app) {
+
+//Controller Home
+$app->match('/home', function (Request $request) use ($app) {
+
+    $aPlaylist = PlaylistQuery::create()
+        ->find();
+
+    var_dump($aPlaylist);
+
+    //Récupération du tableaux de la playlist
+
+
+    //Récupérations du top 10
+
+    //Récupération des dernières chansons jouées
+
+    // display the form
+    return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist));
+});
+
+$app->get('/{page}', function ($page) use ($app) {
     try
     {
         return $app['twig']->render('template/'.$page.'.twig', array());
@@ -128,27 +148,8 @@ $app->match('/upload', function (Request $request) use ($app) {
             $app->abort('404', 'Twig pas trouvé');
         }
     }
-});**/
 
-//Controller Home
-$app->match('/home', function (Request $request) use ($app) {
-	
-	$aPlaylist = PlaylistQuery::create()
-		->find();
-	
-	var_dump($aPlaylist);
-	
-	//Récupération du tableaux de la playlist
-
-	
-	//Récupérations du top 10
-	
-	//Récupération des dernières chansons jouées
-	
-	// display the form
-	return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist));
 });
-
 
 
 return $app;
