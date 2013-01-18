@@ -144,8 +144,8 @@ $app->match('/home', function (Request $request) use ($app) {
 	//Récupération des dernières chansons jouées
 	
 	// display the form
-	return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist);
-}
+	return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist));
+});
 
 
 
