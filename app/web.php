@@ -130,8 +130,22 @@ $app->match('/upload', function (Request $request) use ($app) {
     }
 });**/
 
-
-
+//Controller Home
+$app->match('/home', function (Request $request) use ($app) {
+	
+	$oDbPlaylist = new BasePlaylistPeer();
+	
+	
+	//Récupération du tableaux de la playlist
+	$aPlaylist = $oDbPlaylist->doSelect();
+	
+	//Récupérations du top 10
+	
+	//Récupération des dernières chansons jouées
+	
+	// display the form
+	return $app['twig']->render('template/home.twig', array('playlist' => $aPlaylist);
+}
 
 
 
