@@ -3,9 +3,10 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-$app->mount('home', require_once __DIR__.'./home.php');
 
 $app = require __DIR__.'/bootstrap.php';
+
+$app->mount('home', require_once __DIR__.'/home.php');
 
 
 // CONTROLLER PAGE UPLOAD
@@ -111,11 +112,11 @@ $app->match('/upload', function (Request $request) use ($app) {
     }
 
     // display the form
-    /*return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
+    return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
     ->method('GET|POST');
 
-$app->get('/{page}', function ($page) use ($app) {
+/**$app->get('/{page}', function ($page) use ($app) {
     try
     {
         return $app['twig']->render('template/'.$page.'.twig', array());
@@ -127,7 +128,7 @@ $app->get('/{page}', function ($page) use ($app) {
             $app->abort('404', 'Twig pas trouvé');
         }
     }
-});*/
+});**/
 
 
 
