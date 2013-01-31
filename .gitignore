@@ -14,5 +14,6 @@ thumbs.db
 .project
 .idea/
 .settings/
+.git/
 vendor/
 composer.phar
