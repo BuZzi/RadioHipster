@@ -3,9 +3,26 @@
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 $app = require __DIR__.'/bootstrap.php';
 
+//Controller Home
+$app->match('/', function (Request $request) use ($app) {
+
+    // récupère toutes les chansons depuis la base
+    $songs = BaseSongQuery::create()
+        ->orderBySongId()
+        ->find();
+
+    // récupère les 10 premières
+    $top = array();
+    for($i= 0; $i<10; $i++) {
+        $top[]= $songs[$i];
+    }
+
+    // appelle la vue twig home (param: top et songs)
+    return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
+
+});
 
 // CONTROLLER PAGE UPLOAD
 $app->match('/upload', function (Request $request) use ($app) {
@@ -115,28 +132,6 @@ $app->match('/upload', function (Request $request) use ($app) {
     return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
 ->method('GET|POST');
-
-
-//Controller Home
-$app->match('/home', function (Request $request) use ($app) {
-
-    // récupère toutes les chansons depuis la base
-    $songs = BaseSongQuery::create()
-        ->orderBySongId()
-        ->find();
-
-    // récupère les 10 premières
-    $top = array();
-    for($i= 0; $i<10; $i++) {
-        $top[]= $songs[$i];
-    }
-
-
-    // appelle la vue twig home (param: top et songs)
-    return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
-
-
-});
 
 return $app;
 

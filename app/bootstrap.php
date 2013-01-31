@@ -12,7 +12,6 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
 ));
 
-
 // Appel des services pour les formulaires
 $app->register(new Silex\Provider\TranslationServiceProvider());
 $app->register(new FormServiceProvider());
@@ -30,7 +29,5 @@ $app->register(new Knp\Provider\ConsoleServiceProvider(), array(
     'console.version'           => '1.0.0',
     'console.project_directory' => __DIR__.'/..'
 ));
-
-$app->get('/', function() { return 'test' ;});
 
 return $app;
