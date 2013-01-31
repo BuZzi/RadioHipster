@@ -12,6 +12,7 @@ Desktop.ini
 thumbs.db
 .buildpath
 .project
+.idea
 .settings/
 vendor/
 composer.phar
