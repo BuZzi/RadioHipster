@@ -8,8 +8,8 @@
 use Symfony\Component\HttpFoundation\Request;
 
 //Controller Home
-$app->match('/', function (Request $request) use ($app) {
-
+$app->match('/', function (Request $request) use ($app)
+{
     // Get all songs in the database
     $songs = BaseSongQuery::create()
         ->orderBySongId()
@@ -17,7 +17,8 @@ $app->match('/', function (Request $request) use ($app) {
 
     // Get the first 10 songs
     $top = array();
-    for($i= 0; $i<10; $i++) {
+    for($i= 0; $i<10; $i++)
+    {
         $top[]= $songs[$i];
     }
 
