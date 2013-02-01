@@ -88,8 +88,8 @@ $app->match('/upload', function (Request $request) use ($app)
         $form->bind($request);
 
         // TO DO !!! isValid() !!!
-        if ($form->isValid())
-        {
+        //if ($form->isValid())
+        //{
             $data = $form->getData();
 
             $user = new User();
@@ -112,7 +112,7 @@ $app->match('/upload', function (Request $request) use ($app)
             $file->move($dir, $song->getSongId().'.mp3');
 
             return $app->redirect('/RadioHipster/web/home');
-        }
+        //}
     }
 
     // display the form
