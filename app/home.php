@@ -33,7 +33,6 @@ $app->match('/', function (Request $request) use ($app)
     // Call the Twig view "home" (param: top & songs)
     return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
 
-})
-->bind('home');
+});
 
 return $app;

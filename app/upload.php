@@ -76,8 +76,8 @@ $app->match('/upload', function (Request $request) use ($app)
                     'audio/mpeg',
                 ),
                     'mimeTypesMessage' => 'Seulement du MP3 Ludo',
-                    'maxSize' => "100M" ,
-                    'maxSizeMessage' => '100MB au maximum'))
+                    //'maxSize' => "100M" ,
+                    /*'maxSizeMessage' => '100MB au maximum'*/))
             ),
         ))
         ->getForm();
@@ -111,14 +111,13 @@ $app->match('/upload', function (Request $request) use ($app)
 
             $file->move($dir, $song->getSongId().'.mp3');
 
-            return $app->redirect($app->path('home'));
+            return $app->redirect('/RadioHipster/web/upload');
         //}
     }
 
     // display the form
     return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
-->method('GET|POST')
-->bind('upload');
+->method('GET|POST');
 
 return $app;
