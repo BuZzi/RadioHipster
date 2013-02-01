@@ -10,18 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 //Controller Home
 $app->match('/', function (Request $request) use ($app) {
 
-    // récupère toutes les chansons depuis la base
+    // Get all songs in the database
     $songs = BaseSongQuery::create()
         ->orderBySongId()
         ->find();
 
-    // récupère les 10 premières
+    // Get the first 10 songs
     $top = array();
     for($i= 0; $i<10; $i++) {
         $top[]= $songs[$i];
     }
 
-    // appelle la vue twig home (param: top et songs)
+    // Call the Twig view "home" (param: top & songs)
     return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
 
 });
