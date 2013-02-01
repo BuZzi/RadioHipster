@@ -15,6 +15,14 @@ $app->match('/', function (Request $request) use ($app)
         ->orderBySongId()
         ->find();
 
+    // Search form
+    $form = $app['form.factory']->createBuilder('form')
+        ->add('search', 'search')
+        ->getForm();
+
+    $form->bind($request);
+    $data = $form->getData();
+
     // Get the first 10 songs
     $top = array();
     for($i= 0; $i<10; $i++)
@@ -25,6 +33,7 @@ $app->match('/', function (Request $request) use ($app)
     // Call the Twig view "home" (param: top & songs)
     return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
 
-});
+})
+->bind('home');
 
 return $app;

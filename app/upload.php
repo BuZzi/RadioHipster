@@ -111,13 +111,14 @@ $app->match('/upload', function (Request $request) use ($app)
 
             $file->move($dir, $song->getSongId().'.mp3');
 
-            return $app->redirect('/RadioHipster/web/home');
+            return $app->redirect($app->path('home'));
         //}
     }
 
     // display the form
     return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
-->method('GET|POST');
+->method('GET|POST')
+->bind('upload');
 
 return $app;
