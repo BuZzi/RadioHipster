@@ -6,6 +6,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 //Controller Home
 $app->match('/', function (Request $request) use ($app)
@@ -25,7 +26,12 @@ $app->match('/', function (Request $request) use ($app)
 
     // Get the first 10 songs
     $top = array();
-    for($i= 0; $i<10; $i++)
+    if(count($songs)<10){
+        $topSize = count($songs);
+    }else {
+        $topSize = 10;
+    }
+    for($i= 0; $i<$topSize; $i++)
     {
         $top[]= $songs[$i];
     }
@@ -33,6 +39,7 @@ $app->match('/', function (Request $request) use ($app)
     // Call the Twig view "home" (param: top & songs)
     return $app['twig']->render('template/home.twig', array('top10' => $top, 'allSongs' => $songs));
 
-});
+})
+->bind('home');
 
 return $app;

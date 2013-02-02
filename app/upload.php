@@ -6,6 +6,7 @@
  */
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
 // Controller Upload
@@ -61,12 +62,14 @@ $app->match('/upload', function (Request $request) use ($app)
             'required' => true,
             'constraints' => array(
                 new Assert\NotBlank(array('message' => 'Ne pas laisser vide !')),
-                new Assert\Email(array('message' => 'Invalid email address'))
+                new Assert\Email(array('message' => 'Adresse email invalide'))
             ),
             'attr' => array(
-                'placeholder' => 'email@example.com'
+                'placeholder' => 'email@example.com',
+                'help' => 'Pas de spam !',
             )
         ))
+
         ->add('song', 'file', array(
             'label' => 'Balance ton son',
             'required' => true,
@@ -111,13 +114,14 @@ $app->match('/upload', function (Request $request) use ($app)
 
             $file->move($dir, $song->getSongId().'.mp3');
 
-            return $app->redirect('/RadioHipster/web/upload');
+            return $app->redirect($app->path('upload'));
         //}
     }
 
     // display the form
     return $app['twig']->render('template/upload.twig', array('uploadForm' => $form->createView()));
 })
-->method('GET|POST');
+->method('GET|POST')
+->bind('upload');
 
 return $app;
