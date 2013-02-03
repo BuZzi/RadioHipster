@@ -6,6 +6,8 @@
 {% endblock %}
 
 {% block audioplayer %}
+<div class="left">
+    <h2>Player</h2>
     <!-- audio player -->
     <audio preload></audio>
     <ol id="playlist">
@@ -21,6 +23,7 @@
     <!-- content -->
     {% block research %}
         <div id="research">
+            <h2>Recherche</h2>
             <select id="e9">
                 {% for song in allSongs %}
                     <option value="{{ song.songId }}">{{ song.songName }}</option>
@@ -28,6 +31,7 @@
             </select>
 	    </div>
     {% endblock %}
+</div>
     {% block top10 %}
         <div id="top10">
             <h2>TOP 10</h2>
@@ -40,6 +44,11 @@
             </ol>
         </div>
     {% endblock %}
+
+    <div id="upload">
+        <h2>Ajouter une musique</h2>
+        <a class="btn btn-info" href="{{ path('upload') }}">Lien vers le formulaire</a>
+    </div>
 {% endblock %}
 
 {% block javascript %}
@@ -51,7 +60,7 @@
         $(document).ready(function() {
             $("#e9").select2({
                 placeholder: "Recherche une musique",
-                allowClear: true
+               // allowClear: true
             });
         });
     </script>

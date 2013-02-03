@@ -6,7 +6,7 @@ body {
 
 h1 {
     color: #444;
-    font-size: 1.2em;
+    font-size: 2em;
     padding: 14px 2px 12px;
     margin: 0px;
 }
@@ -38,14 +38,29 @@ ol ol{
     margin: 0 auto;
     width: 80%;
 }
-
+#wrapper h1{
+    text-align: center;
+    text-transform: uppercase;
+}
+.left{
+    float: left;
+}
+.right{
+    float: right;
+}
 /** research **/
 #research{
     width: 100%;
 }
+#e9{
+    width: 2000px;
+}
+.select2-container{
+    width: 300px;
+}
 
 /** bloc des résultat **/
-#top10{
+#top10, #upload{
     width: 40%;
     float: right;
 }
@@ -54,13 +69,12 @@ ol ol{
 .rounded-list a{
     position: relative;
     display: block;
-    padding: .4em .4em .4em 2em;
+    padding: .4em .4em .4em .8em;
     *padding: .4em;
-    margin: .5em 0;
+    margin: .5em 0 .5em 2.5em;
     background: #ddd;
     color: #444;
     text-decoration: none;
-    border-radius: .3em;
     transition: all .3s ease-out;
 }
 
@@ -76,16 +90,28 @@ ol ol{
     content: counter(li);
     counter-increment: li;
     position: absolute;
-    left: -1.3em;
+    left: -2.5em;
     top: 50%;
-    margin-top: -1.3em;
-    background: #87ceeb;
+    margin-top: -1em;
+    background: #fa8072;
     height: 2em;
     width: 2em;
     line-height: 2em;
-    border: .3em solid #fff;
     text-align: center;
     font-weight: bold;
-    border-radius: 2em;
+}
+
+.rounded-list a:after{
+    position: absolute;
+    content: '';
+    border: .5em solid transparent;
+    left: -1em;
+    top: 50%;
+    margin-top: -.5em;
     transition: all .3s ease-out;
+}
+
+.rounded-list a:hover:after{
+    left: -.5em;
+    border-left-color: #fa8072;
 }

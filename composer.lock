@@ -1,5 +1,5 @@
 {
-    "hash": "3970c26046cb8f20ae0c25ea6a36c035",
+    "hash": "15e788c38055eb850d4fb9677813a64d",
     "packages": [
         {
             "name": "knplabs/console-service-provider",
@@ -21,6 +21,7 @@
             },
             "time": "2012-10-07 21:19:54",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Knp\\": ""
@@ -62,6 +63,7 @@
             },
             "time": "2012-04-06 11:33:25",
             "type": "library",
+            "installation-source": "dist",
             "autoload": {
                 "classmap": [
                     "classes/phing/"
@@ -113,6 +115,7 @@
                     "dev-master": "1.0.x-dev"
                 }
             },
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Pimple": "lib/"
@@ -155,6 +158,7 @@
             },
             "time": "2012-06-17 17:12:41",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Propel\\Silex": "src"
@@ -187,19 +191,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/Propel",
-                "reference": "edee8827243021cccd1215687d2c6ec359840143"
+                "reference": "f8f2708dbfd377ca7e842d78189119eb2765e259"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/propelorm/Propel/archive/edee8827243021cccd1215687d2c6ec359840143.zip",
-                "reference": "edee8827243021cccd1215687d2c6ec359840143",
+                "url": "https://api.github.com/repos/propelorm/Propel/zipball/f8f2708dbfd377ca7e842d78189119eb2765e259",
+                "reference": "f8f2708dbfd377ca7e842d78189119eb2765e259",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4",
                 "phing/phing": "2.4.12"
             },
-            "time": "2013-01-16 20:48:31",
+            "time": "2013-02-02 20:33:22",
             "bin": [
                 "generator/bin/propel-gen",
                 "generator/bin/propel-gen.bat"
@@ -210,13 +214,14 @@
                     "dev-master": "1.6-dev"
                 }
             },
+            "installation-source": "source",
             "autoload": {
                 "classmap": [
                     "runtime/lib",
                     "generator/lib"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "include-path": [
                 "runtime/lib",
                 "generator/lib"
@@ -247,12 +252,12 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Silex.git",
-                "reference": "39d0c80ef9fe793bf2f008c235d8546c8813abdf"
+                "reference": "a23c221e609a17dfc2923066e1680149b7678cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Silex/archive/39d0c80ef9fe793bf2f008c235d8546c8813abdf.zip",
-                "reference": "39d0c80ef9fe793bf2f008c235d8546c8813abdf",
+                "url": "https://api.github.com/repos/fabpot/Silex/zipball/a23c221e609a17dfc2923066e1680149b7678cf9",
+                "reference": "a23c221e609a17dfc2923066e1680149b7678cf9",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +269,6 @@
                 "symfony/routing": ">=2.1,<2.3-dev"
             },
             "require-dev": {
-                "monolog/monolog": ">=1.0.0,<1.2-dev",
                 "twig/twig": ">=1.8.0,<2.0-dev",
                 "swiftmailer/swiftmailer": "4.2.*",
                 "doctrine/dbal": ">=2.2.0,<2.4.0-dev",
@@ -280,26 +284,29 @@
                 "symfony/translation": ">=2.1,<2.3-dev",
                 "symfony/twig-bridge": ">=2.1,<2.3-dev",
                 "symfony/validator": ">=2.1,<2.3-dev",
-                "symfony/serializer": ">=2.1,<2.3-dev"
+                "symfony/serializer": ">=2.1,<2.3-dev",
+                "symfony/dom-crawler": ">=2.1,<2.3-dev",
+                "symfony/options-resolver": ">=2.1,<2.3-dev"
             },
             "suggest": {
                 "symfony/browser-kit": ">=2.1,<2.3-dev",
                 "symfony/css-selector": ">=2.1,<2.3-dev",
                 "symfony/dom-crawler": ">=2.1,<2.3-dev"
             },
-            "time": "2013-01-18 14:57:42",
+            "time": "2013-01-25 06:59:19",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.0.x-dev"
                 }
             },
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Silex": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -344,6 +351,7 @@
                     "dev-master": "4.1-dev"
                 }
             },
+            "installation-source": "dist",
             "autoload": {
                 "files": [
                     "lib/swift_required.php"
@@ -389,6 +397,7 @@
             },
             "time": "2013-01-09 08:51:07",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Config": ""
@@ -431,6 +440,7 @@
             },
             "time": "2013-01-17 15:20:05",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Console": ""
@@ -480,6 +490,7 @@
             },
             "time": "2013-01-11 00:31:43",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\EventDispatcher": ""
@@ -533,6 +544,7 @@
             },
             "time": "2013-01-11 13:37:17",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Form": ""
@@ -562,26 +574,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation",
-                "reference": "v2.1.7"
+                "reference": "86a9fb3d4b64d5e6ef198b0aba1b979e3d34766e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/HttpFoundation/archive/v2.1.7.zip",
-                "reference": "v2.1.7",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/86a9fb3d4b64d5e6ef198b0aba1b979e3d34766e",
+                "reference": "86a9fb3d4b64d5e6ef198b0aba1b979e3d34766e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "2013-01-11 00:31:43",
+            "time": "2013-01-30 21:06:00",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\HttpFoundation": "",
                     "SessionHandlerInterface": "Symfony/Component/HttpFoundation/Resources/stubs"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -638,6 +651,7 @@
             },
             "time": "2013-01-17 23:11:33",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\HttpKernel": ""
@@ -683,6 +697,7 @@
             },
             "time": "2013-01-10 04:41:59",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Locale": ""
@@ -725,6 +740,7 @@
             },
             "time": "2013-01-09 08:51:07",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\OptionsResolver": ""
@@ -759,12 +775,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing",
-                "reference": "9ce05861fd9aa6cbb14759a78ab30d07afcf489f"
+                "reference": "429dcf21fafd7ea46218c3a59a649944a96a2102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Routing/archive/9ce05861fd9aa6cbb14759a78ab30d07afcf489f.zip",
-                "reference": "9ce05861fd9aa6cbb14759a78ab30d07afcf489f",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/429dcf21fafd7ea46218c3a59a649944a96a2102",
+                "reference": "429dcf21fafd7ea46218c3a59a649944a96a2102",
                 "shasum": ""
             },
             "require": {
@@ -782,19 +798,20 @@
                 "symfony/config": "2.2.*",
                 "symfony/yaml": "2.2.*"
             },
-            "time": "2013-01-17 15:25:59",
+            "time": "2013-01-31 21:39:01",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.2-dev"
+                    "dev-master": "2.3-dev"
                 }
             },
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Routing\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -839,6 +856,7 @@
             },
             "time": "2013-01-09 08:51:07",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Translation": ""
@@ -898,6 +916,7 @@
             },
             "time": "2013-01-17 15:20:05",
             "type": "symfony-bridge",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Bridge\\Twig": ""
@@ -950,6 +969,7 @@
             },
             "time": "2013-01-11 00:31:43",
             "type": "library",
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Validator": ""
@@ -978,30 +998,31 @@
             "source": {
                 "type": "git",
                 "url": "git://github.com/fabpot/Twig.git",
-                "reference": "93c6a8dedc46c73ccdd61342de3d5e761e4412f6"
+                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/fabpot/Twig/archive/93c6a8dedc46c73ccdd61342de3d5e761e4412f6.zip",
-                "reference": "93c6a8dedc46c73ccdd61342de3d5e761e4412f6",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/c6445fb5cd6823f7bd65108a717064957b6eafd5",
+                "reference": "c6445fb5cd6823f7bd65108a717064957b6eafd5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.4"
             },
-            "time": "2013-01-18 09:58:04",
+            "time": "2013-02-01 09:44:45",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "1.12-dev"
                 }
             },
+            "installation-source": "source",
             "autoload": {
                 "psr-0": {
                     "Twig_": "lib/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "BSD-3"
             ],

@@ -1,6 +1,7 @@
 {% extends "layout/base.twig" %}
 
 {% block content %}
+    <h2>Formulaire d'ajout d'une musique</h2>
     <form action="{{ ('upload') }}" method="POST" class="form" {{ form_enctype(uploadForm) }}>
         <div>
             {{ form_label(uploadForm.musicName) }}
@@ -45,6 +46,7 @@
         </div>
 
 
-        <input type="submit" name="submit" />
+        <input class="btn" type="submit" name="submit" />
     </form>
+    <a class="btn btn-info" href="{{ path('home') }}">Retour à l'accueil</a>
 {% endblock %}
