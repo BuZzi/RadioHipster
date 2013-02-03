@@ -1,21 +1,22 @@
+<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Radio Hype</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="../web/css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" media="screen" href="../web/css/style.css">
-        <link type="text/css" href="../web/css/jplayer.blue.monday.css" rel="stylesheet" />
+        <title>Radio Hipster</title>
+        {% block css %}
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ app.request.basepath }}/css/bootstrap.css">
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ app.request.basepath }}/css/style.css">
+            <link rel="stylesheet" type="text/css" media="screen" href="{{ app.request.basepath }}/css/select2.css">
+        {% endblock %}
     </head>
     <body>
-    <div id="wrapper">
-
-        {% block content %}
-            Le bloc base
-
-        {% endblock %}
-    </div>
-    {% block lecteur %}
-
-    {% endblock %}
+        <div id="wrapper">
+            <h1>Radio Hipster</h1>
+            {% block audioplayer %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
     </body>
+    {% block javascript %}
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    {% endblock %}
 </html>

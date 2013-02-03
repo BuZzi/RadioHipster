@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by the fat ide JetBrains PhpStorm.
- * User: Franck GORIN
- * Date: 01/02/13 -- 21:40
- */
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -100,13 +100,21 @@ $app->match('/upload', function (Request $request) use ($app)
                 ->setUserName($data['userName'])
                 ->save();
 
-            $song = new Song();
-            $song->setSongName($data['musicName'])
+            $artiste = new Artiste();
+            $artiste->setArtisteName($data['artiste'])
                 ->save();
 
-            $song->setUserId($user->getUserId())->save();
+            $album = new Album();
+            $album->setAlbumName($data['album'])
+                ->save();
 
-            $song->setPlaylistId('1');
+            $song = new Song();
+            $song->setSongName($data['musicName'])
+                ->setUserId($user->getUserId())
+                ->setArtisteId($artiste->getArtisteId())
+                ->setAlbumId($album->getAlbumId())
+                ->setPlaylistId('1')
+                ->save();
 
             $file = $data['song'];
 
@@ -114,7 +122,7 @@ $app->match('/upload', function (Request $request) use ($app)
 
             $file->move($dir, $song->getSongId().'.mp3');
 
-            return $app->redirect($app->path('upload'));
+            return $app->redirect('/RadioHipster/web/');
         //}
     }
 

@@ -17,3 +17,4 @@ thumbs.db
 .git/
 vendor/
 composer.phar
+.mp3
