@@ -502,8 +502,8 @@ disabled look for already selected choices in the results dropdown
 .select2-container-multi.select2-container-disabled .select2-choices .select2-search-choice .select2-search-choice-close {
     display: none;
 }
-/* end multiselect */
 
+/* end multiselect */
 .select2-result-selectable .select2-match,
 .select2-result-unselectable .select2-result-selectable .select2-match { text-decoration: underline; }
 .select2-result-unselectable .select2-match { text-decoration: none; }
@@ -511,7 +511,6 @@ disabled look for already selected choices in the results dropdown
 .select2-offscreen { position: absolute; left: -10000px; }
 
 /* Retina-ize icons */
-
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
 	.select2-search input, .select2-search-choice-close, .select2-container .select2-choice abbr, .select2-container .select2-choice div b {
 		background-image: url('/../RadioHipster/web/img/select2x2.png') !important;
