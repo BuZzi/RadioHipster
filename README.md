@@ -3,7 +3,7 @@ RadioHipster
 
 la radio So Fresh So Hype !
 
-basé sur leFramework PHP Silex
+basé sur le Framework PHP Silex
 
 ------------
 
